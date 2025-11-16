@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-//import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -27,6 +26,7 @@ import ru.sikuda.mobile.proverbdetail.DetailProverbRoute
 import ru.sikuda.mobile.proverbdetail.ProverbDetailScreen
 import ru.sikuda.mobile.proverbs.data.ProverbDao
 import ru.sikuda.mobile.proverbs.data.ProverbEntity
+import ru.sikuda.mobile.proverbs.utils.loadAllData
 
 @Composable
 @Preview
@@ -36,17 +36,7 @@ fun App( proverbDao: ProverbDao) {
     val navController = rememberNavController()
 
     LaunchedEffect(true) {
-        val listProverbs = listOf<ProverbEntity>(
-            ProverbEntity("А воз и ныне там.", "(Цитата из басни И. А. Крылова. Смысл поговорки в том, " +
-                    "что не смотря на все разговоры и обещания по какому-либо делу, ничего кроме болтовни не сделано.)", 1),
-            ProverbEntity("А где щи, тут и нас ищи.", "(Русская пословица, означает что человек пытается стремиться" +
-                    " туда, где хорошо, где сытая, богатая жизнь.)", 2),
-            ProverbEntity("А ларчик просто открывался.", "(Цитата из басни И.А. Крылова. Говорится в том случае, " +
-                    "когда на самом деле все было намного проще, чем думали и делали люди.)", 3),
-        )
-        listProverbs.forEach {
-            proverbDao.upsert(it)
-        }
+        loadAllData(proverbDao)
     }
 
     NavHost(navController, startDestination = ListProverbRoute("home")) {

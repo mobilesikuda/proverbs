@@ -70,4 +70,7 @@ interface ProverbDao {
          */
         @Query("DELETE FROM catalogProverbs")
         suspend fun deleteAll()
+
+        @Query("SELECT COUNT(*) FROM catalogProverbs")
+        suspend fun size(): Int
 }

@@ -20,6 +20,7 @@ ksp = "2.3.2"
 roomRuntimeJvm = "2.8.3"
 #roomKtx = "2.8.3"
 kotlinx-navigation = "2.9.1"
+kotlin-json="1.9.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -40,6 +41,7 @@ androidx-room-sqlite-wrapper = { module = "androidx.room:room-sqlite-wrapper", v
 androidx-room-runtime-jvm = { group = "androidx.room", name = "room-runtime-jvm", version.ref = "roomRuntimeJvm" }
 #androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 kotlinx-navigation-compose = { module ="org.jetbrains.androidx.navigation:navigation-compose", version.ref = "kotlinx-navigation" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref= "kotlin-json" }
 
 
 [plugins]

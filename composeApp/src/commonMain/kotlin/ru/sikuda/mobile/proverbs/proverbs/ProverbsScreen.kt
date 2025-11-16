@@ -27,13 +27,11 @@ fun ProverbsScreen(
     LazyColumn(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
-            .safeContentPadding()
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
         items( proverbs) { item ->
-        //listProverbs.forEach { item ->
             Row(
                 Modifier
                     .clickable( onClick =  { onDetailClick(item.uid) } )
