@@ -73,4 +73,13 @@ interface ProverbDao {
 
         @Query("SELECT COUNT(*) FROM catalogProverbs")
         suspend fun size(): Int
+
+    /**
+     * Observes list of proverbs.
+     *
+     * @return all tasks.
+     */
+    @Query("SELECT uid, title, description FROM catalogProverbs " +
+            "WHERE title LIKE '%'|| :strFind ||'%' OR description LIKE '%'|| :strFind ||'%'")
+    fun findAll(strFind: String): Flow<List<ProverbEntity>>
 }

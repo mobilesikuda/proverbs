@@ -32,26 +32,28 @@ import ru.sikuda.mobile.proverbs.utils.loadAllData
 @Preview
 fun App( proverbDao: ProverbDao) {
 
+
     val proverbs by proverbDao.getAll().collectAsState(initial = emptyList())
+    var strFind by remember { mutableStateOf("") }
     val navController = rememberNavController()
 
     LaunchedEffect(true) {
         loadAllData(proverbDao)
     }
 
-    NavHost(navController, startDestination = ListProverbRoute("home")) {
+    NavHost(navController, startDestination = ListProverbRoute("")) {
         composable<DetailProverbRoute> { backStackEntry ->
             val route: DetailProverbRoute = backStackEntry.toRoute()
-            TopBarNavigation(proverbs, navController, route) { navController.popBackStack() }
+            TopBarNavigation(strFind, proverbs, navController, route) { navController.popBackStack() }
         }
         composable<ListProverbRoute> { backStackEntry ->
             val route: ListProverbRoute = backStackEntry.toRoute()
-            TopBarNavigation(proverbs, navController, route) { navController.popBackStack() }
+            TopBarNavigation( strFind, proverbs, navController, route) { navController.popBackStack() }
         }
         //depricated
         composable("home")
         {
-            TopBarNavigation(proverbs, navController) { navController.popBackStack() }
+            TopBarNavigation(strFind, proverbs, navController) { navController.popBackStack() }
         }
     }
 
@@ -61,6 +63,7 @@ fun App( proverbDao: ProverbDao) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarNavigation(
+    strFind: String,
     proverbs: List<ProverbEntity>,
     navController: NavHostController,
     route: Any? = null,
@@ -102,6 +105,7 @@ fun TopBarNavigation(
                     ProverbDetailScreen(item)
                 }
                 else -> ProverbsScreen(
+                    strFind,
                     proverbs,
                     { id-> navController.navigate( DetailProverbRoute( id.toString() )) }
                 )
