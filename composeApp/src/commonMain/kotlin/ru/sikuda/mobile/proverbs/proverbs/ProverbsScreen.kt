@@ -78,7 +78,6 @@ fun ProverbsScreen(
                         singleLine = true,
                         textStyle = TextStyle.Default.copy(fontSize = 20.sp),
                         modifier = Modifier.weight(1f).fillMaxWidth().padding(8.dp)
-                        //label = { Text("Найти") }
                     )
                 }
 
@@ -124,7 +123,6 @@ fun listFilterProverbs(proverbs: List<ProverbEntity>, strFilter: String): List<P
 }
 
 fun fillListProverbs(proverbs: List<ProverbEntity>, strFilter: String, proverbsFilter: SnapshotStateList<ProverbEntity>){
-
     proverbsFilter.clear()
     val list = listFilterProverbs(proverbs, strFilter)
     list.forEach {  item ->

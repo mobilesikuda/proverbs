@@ -1,7 +1,5 @@
 package ru.sikuda.mobile.proverbs
 
-//import androidx.compose.foundation.lazy.LazyColumn
-//import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -22,14 +20,13 @@ import ru.sikuda.mobile.proverbs.utils.loadAllData
 fun App( proverbDao: ProverbDao) {
 
     val proverbs by proverbDao.getAll().collectAsState(initial = emptyList())
-    //var strFind by remember { mutableStateOf("") }
     val navController = rememberNavController()
 
     LaunchedEffect(true) {
         loadAllData(proverbDao)
     }
 
-    NavHost(navController, startDestination = ListProverbRoute("крылов")) {
+    NavHost(navController, startDestination = ListProverbRoute("")) {
         composable<DetailProverbRoute> { backStackEntry ->
             val route: DetailProverbRoute = backStackEntry.toRoute()
             val item = proverbs.firstOrNull { it.uid.toString() == route.id } ?: ProverbEntity("", "", 1)
@@ -40,16 +37,10 @@ fun App( proverbDao: ProverbDao) {
             ProverbsScreen(
                 route.strFilter,
                 proverbs,
-                //{ text -> navController.navigate(ListProverbRoute(text )) },
                 { id, text ->
                     navController.navigate(ListProverbRoute( text ))
                     navController.navigate(DetailProverbRoute(id.toString())) })
         }
-        //depricated
-//        composable("home")
-//        {
-//            TopBarNavigation(strFind, proverbs, navController) { navController.popBackStack() }
-//        }
     }
 }
 
