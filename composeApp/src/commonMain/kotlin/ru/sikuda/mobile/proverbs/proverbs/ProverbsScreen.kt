@@ -7,16 +7,21 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.stringResource
+import proverbs.composeapp.generated.resources.Res
+import proverbs.composeapp.generated.resources.app_name
+import proverbs.composeapp.generated.resources.filterListLabel
 import ru.sikuda.mobile.proverbs.data.ProverbEntity
 
 @Serializable
-data class ListProverbRoute(val name: String)
+data class ListProverbRoute(val strFilter: String)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,9 +34,7 @@ fun ProverbsScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(
-                        "Пословицы",
-                    )
+                    Text( stringResource(Res.string.app_name))
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer
@@ -45,11 +48,8 @@ fun ProverbsScreen(
         Column(
             modifier = Modifier.padding(innerPadding)
         ) {
-            var text by remember { mutableStateOf(strFind) }
-            var proverbsFilter = proverbs.filter {
-                it.title.contains(text) or
-                        it.description.contains(text)
-            }
+            var strFilter by remember { mutableStateOf(strFind) }
+            val proverbsFilter = listFilterProverbs(proverbs, strFilter).toMutableStateList()
 
             Column(
                 modifier = Modifier
@@ -65,18 +65,15 @@ fun ProverbsScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        "Поиск по слову:",
+                        stringResource(Res.string.filterListLabel),
                         fontSize = 20.sp,
                         modifier = Modifier.padding(8.dp),
                     )
                     OutlinedTextField(
-                        value = text,
+                        value = strFilter,
                         onValueChange = { newText ->
-                            text = newText
-                            proverbsFilter = proverbs.filter {
-                                it.title.contains(text) or
-                                        it.description.contains(text)
-                            }
+                            strFilter = newText
+                            fillListProverbs(proverbs, strFilter, proverbsFilter)
                         },
                         singleLine = true,
                         textStyle = TextStyle.Default.copy(fontSize = 20.sp),
@@ -94,7 +91,7 @@ fun ProverbsScreen(
                     items(proverbsFilter) { item ->
                         Row(
                             Modifier
-                                .clickable(onClick = { onDetailClick(item.uid, text) })
+                                .clickable(onClick = { onDetailClick(item.uid, strFilter) })
                         ) {
                             Text(
                                 text = item.title,
@@ -116,6 +113,22 @@ fun ProverbsScreen(
                 }
             }
         }
+    }
+}
+
+fun listFilterProverbs(proverbs: List<ProverbEntity>, strFilter: String): List<ProverbEntity> {
+    return proverbs.filter {
+        it.title.contains(strFilter, ignoreCase = true) or
+                it.description.contains(strFilter, ignoreCase = true)
+    }
+}
+
+fun fillListProverbs(proverbs: List<ProverbEntity>, strFilter: String, proverbsFilter: SnapshotStateList<ProverbEntity>){
+
+    proverbsFilter.clear()
+    val list = listFilterProverbs(proverbs, strFilter)
+    list.forEach {  item ->
+        proverbsFilter.add( item )
     }
 }
 

@@ -21,8 +21,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import proverbs.composeapp.generated.resources.Res
 import proverbs.composeapp.generated.resources.arrow_back_24dp
+import proverbs.composeapp.generated.resources.filterListLabel
 import ru.sikuda.mobile.proverbs.data.ProverbEntity
 
 @Serializable
@@ -40,9 +42,7 @@ fun ProverbDetailScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(
-                        "Пословицы",
-                    )
+                    Text(stringResource(Res.string.filterListLabel))
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer
@@ -76,15 +76,13 @@ fun ProverbDetailScreen(
 
                 Text(
                     item.title,
-                    fontSize = 30.sp,
+                    fontSize = 28.sp,
                     modifier = Modifier.padding(16.dp)
                 )
-
                 HorizontalDivider(
                     modifier = Modifier.padding(16.dp)
                 )
-
-                Text(item.description, modifier = Modifier.padding(16.dp))
+                Text(item.description, modifier = Modifier.padding(18.dp))
             }
         }
     }

@@ -29,7 +29,7 @@ fun App( proverbDao: ProverbDao) {
         loadAllData(proverbDao)
     }
 
-    NavHost(navController, startDestination = ListProverbRoute("")) {
+    NavHost(navController, startDestination = ListProverbRoute("крылов")) {
         composable<DetailProverbRoute> { backStackEntry ->
             val route: DetailProverbRoute = backStackEntry.toRoute()
             val item = proverbs.firstOrNull { it.uid.toString() == route.id } ?: ProverbEntity("", "", 1)
@@ -38,7 +38,7 @@ fun App( proverbDao: ProverbDao) {
         composable<ListProverbRoute> { backStackEntry ->
             val route: ListProverbRoute = backStackEntry.toRoute()
             ProverbsScreen(
-                route.name,
+                route.strFilter,
                 proverbs,
                 //{ text -> navController.navigate(ListProverbRoute(text )) },
                 { id, text ->
