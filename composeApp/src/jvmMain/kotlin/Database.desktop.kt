@@ -4,7 +4,7 @@ import ru.sikuda.mobile.proverbs.data.ProverbDatabase
 import java.io.File
 
 fun getDatabaseBuilder(): RoomDatabase.Builder<ProverbDatabase> {
-    val dbFile = File(System.getProperty("java.io.tmpdir"), "proverbDatabase.db")
+    val dbFile = File(System.getProperty("java.io.tmpdir"), "proverbDatabase1.db")
     return Room.databaseBuilder<ProverbDatabase>(
         name = dbFile.absolutePath,
     )
