@@ -19,7 +19,7 @@ import ru.sikuda.mobile.proverbs.utils.loadAllData
 @Preview
 fun App( proverbDao: ProverbDao) {
 
-    val proverbs by proverbDao.getAll().collectAsState(initial = emptyList())
+    val proverbs by proverbDao.getAll() .collectAsState(initial = emptyList())
     val navController = rememberNavController()
 
     LaunchedEffect(true) {
