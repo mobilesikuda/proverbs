@@ -1,5 +1,6 @@
 package ru.sikuda.mobile.proverbs
 
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -17,7 +18,10 @@ import ru.sikuda.mobile.proverbs.utils.loadAllData
 
 @Composable
 @Preview
-fun App( proverbDao: ProverbDao) {
+fun App(
+    proverbDao: ProverbDao,
+    windowSize: WindowSizeClass? = null
+) {
 
     val proverbs by proverbDao.getAll() .collectAsState(initial = emptyList())
     val navController = rememberNavController()
@@ -35,11 +39,13 @@ fun App( proverbDao: ProverbDao) {
         composable<ListProverbRoute> { backStackEntry ->
             val route: ListProverbRoute = backStackEntry.toRoute()
             ProverbsScreen(
+                windowSize,
                 route.strFilter,
                 proverbs,
                 { id, text ->
                     navController.navigate(ListProverbRoute( text ))
-                    navController.navigate(DetailProverbRoute(id.toString())) })
+                    navController.navigate(DetailProverbRoute(id.toString()))
+                })
         }
     }
 }

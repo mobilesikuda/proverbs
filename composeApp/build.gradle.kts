@@ -40,6 +40,7 @@ kotlin {
             implementation(libs.androidx.sqlite.bundled)
             implementation(libs.kotlinx.navigation.compose)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.windowsSizeClass)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

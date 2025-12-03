@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,6 +15,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import proverbs.composeapp.generated.resources.Res
+import proverbs.composeapp.generated.resources.app_name
+import proverbs.composeapp.generated.resources.ic_arrow_back
+import proverbs.composeapp.generated.resources.ic_search
 import ru.sikuda.mobile.proverbs.data.ProverbEntity
 
 @Serializable
@@ -21,84 +29,88 @@ data class ListProverbRoute(val strFilter: String)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProverbsScreen(
+    windowSize: WindowSizeClass?,
     strFind: String,
     proverbs: List<ProverbEntity>,
     onDetailClick: (Int, String) -> Unit
 ) {
-
-    var query by remember { mutableStateOf("") }
+    var fSearch by remember { mutableStateOf(false) }
+    var query by remember { mutableStateOf(strFind) }
     val searchResults = remember { mutableStateListOf<ProverbEntity>() }
 
     if (proverbs.count() > 0 ) {
-        LaunchedEffect(query) {
-            searchResults.clear()
-            searchResults.addAll(
-                proverbs.filter {
-                    it.title.contains(
-                        other = query,
-                        ignoreCase = true,
-                    ) ||
-                            it.description.contains(
-                                other = query,
-                                ignoreCase = true,
-                            )
-                },
-            )
-        }
+        if (query.isNotEmpty())
+            LaunchedEffect(query) {
+                searchResults.clear()
+                searchResults.addAll(
+                    proverbs.filter {
+                        it.title.contains(
+                            other = query,
+                            ignoreCase = true,
+                        ) ||
+                                it.description.contains(
+                                    other = query,
+                                    ignoreCase = true,
+                                )
+                    },
+                )
+            }
+        else searchResults.addAll(proverbs)
     }
 
     Scaffold(
         topBar = {
-            OutlinedTextField(
-                value = query,
-                onValueChange = { newText ->
-                    query = newText
-                    //fillListProverbs(proverbs, strFilter, proverbsFilter)
+            CenterAlignedTopAppBar(
+                title = {
+                    if(!fSearch) Text(stringResource(Res.string.app_name))
                 },
-                singleLine = true,
-                textStyle = TextStyle.Default.copy(fontSize = 20.sp),
-                modifier = Modifier.fillMaxWidth().padding(8.dp)
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer
+                ),
+                navigationIcon = {
+                    Row(
+                        //horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        IconButton( onClick = {
+                            fSearch = !fSearch
+                            if (!fSearch) query = ""
+                        }) {
+                            Icon(
+                                painter = if(fSearch) painterResource(Res.drawable.ic_arrow_back)
+                                          else painterResource(Res.drawable.ic_search),
+                                contentDescription = "Search"
+                            )
+                        }
+                        if (fSearch) {
+                            //Text(stringResource(Res.string.filterListLabel))
+                            OutlinedTextField(
+                                value = query,
+                                onValueChange = { newText ->
+                                    query = newText
+                                },
+                                singleLine = true,
+                                textStyle = TextStyle.Default.copy(fontSize = 20.sp),
+                                modifier = Modifier.fillMaxWidth().padding(8.dp)
+                            )
+                        }
+                    }
+                },
+                actions = {
+
+                }
             )
-//            CenterAlignedTopAppBar(
-//                title = {
-//                    Text( stringResource(Res.string.app_name))
-//                },
-//                colors = TopAppBarDefaults.topAppBarColors(
-//                    containerColor = MaterialTheme.colorScheme.secondaryContainer
-//                ),
-//                actions = {
-//
-//                }
-//            )
         },
     ) { innerPadding ->
         Column(
             modifier = Modifier.padding(innerPadding)
         ) {
-            //var strFilter by remember { mutableStateOf(strFind) }
-            //val proverbsFilter = listFilterProverbs(proverbs, strFilter).toMutableStateList()
-
             Column(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.background)
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-//                Row(
-//                    modifier = Modifier
-//                        .background(MaterialTheme.colorScheme.tertiary)
-//                        .fillMaxWidth(),
-//                    verticalAlignment = Alignment.CenterVertically, // Vertically center children
-//                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-//                ) {
-//                    Text(
-//                        stringResource(Res.string.filterListLabel),
-//                        fontSize = 20.sp,
-//                        modifier = Modifier.padding(8.dp),
-//                    )
-//
-//                }
-
                 LazyColumn(
                     modifier = Modifier
                         //.background(MaterialTheme.colorScheme.background)
@@ -116,13 +128,17 @@ fun ProverbsScreen(
                                     .padding(8.dp),
                                 fontSize = 24.sp
                             )
-                            BoxWithConstraints {
-                                if (maxWidth > 400.dp) {
+                            //BoxWithConstraints {
+                            if (
+                                windowSize?.widthSizeClass != WindowWidthSizeClass.Compact &&
+                                windowSize?.widthSizeClass != WindowWidthSizeClass.Medium
+                                ){
+                                //if (maxWidth > 400.dp) {
                                     Text(
                                         text = item.description,
                                         modifier = Modifier.padding(2.dp)
                                     )
-                                }
+                                //}
                             }
                         }
                         HorizontalDivider()
@@ -133,19 +149,6 @@ fun ProverbsScreen(
     }
 }
 
-//fun listFilterProverbs(proverbs: List<ProverbEntity>, strFilter: String): List<ProverbEntity> {
-//    return proverbs.filter {
-//        it.title.contains(strFilter, ignoreCase = true) or
-//                it.description.contains(strFilter, ignoreCase = true)
-//    }
-//}
-//
-//fun fillListProverbs(proverbs: List<ProverbEntity>, strFilter: String, proverbsFilter: SnapshotStateList<ProverbEntity>){
-//    proverbsFilter.clear()
-//    val list = listFilterProverbs(proverbs, strFilter)
-//    list.forEach {  item ->
-//        proverbsFilter.add( item )
-//    }
-//}
+
 
 
