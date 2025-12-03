@@ -6,7 +6,6 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import getDatabaseBuilder
 import ru.sikuda.mobile.proverbs.data.getRoomDatabase
-import java.awt.Dimension
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 fun main() = application {
@@ -14,7 +13,8 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "proverbs",
     ) {
-        window.minimumSize = Dimension(400, 400)
+        //window.setSize(600, 600)
+        //window.minimumSize = Dimension(400, 400)
         val db  = getRoomDatabase(getDatabaseBuilder())
         val dao = db.proverbDao()
         val windowSize = calculateWindowSizeClass()

@@ -21,6 +21,7 @@ import proverbs.composeapp.generated.resources.Res
 import proverbs.composeapp.generated.resources.app_name
 import proverbs.composeapp.generated.resources.ic_arrow_back
 import proverbs.composeapp.generated.resources.ic_search
+import proverbs.composeapp.generated.resources.search
 import ru.sikuda.mobile.proverbs.data.ProverbEntity
 
 @Serializable
@@ -34,11 +35,13 @@ fun ProverbsScreen(
     proverbs: List<ProverbEntity>,
     onDetailClick: (Int, String) -> Unit
 ) {
-    var fSearch by remember { mutableStateOf(false) }
+    var fSearch by remember { mutableStateOf(strFind.isNotEmpty()) }
+    //var fSearch by remember { mutableStateOf(false) }
     var query by remember { mutableStateOf(strFind) }
     val searchResults = remember { mutableStateListOf<ProverbEntity>() }
 
     if (proverbs.count() > 0 ) {
+        searchResults.clear()
         if (query.isNotEmpty())
             LaunchedEffect(query) {
                 searchResults.clear()
@@ -83,7 +86,10 @@ fun ProverbsScreen(
                             )
                         }
                         if (fSearch) {
-                            //Text(stringResource(Res.string.filterListLabel))
+                            Text(
+                                stringResource(Res.string.search),
+                                fontSize = 20.sp
+                            )
                             OutlinedTextField(
                                 value = query,
                                 onValueChange = { newText ->
@@ -113,7 +119,6 @@ fun ProverbsScreen(
             ) {
                 LazyColumn(
                     modifier = Modifier
-                        //.background(MaterialTheme.colorScheme.background)
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
@@ -128,17 +133,14 @@ fun ProverbsScreen(
                                     .padding(8.dp),
                                 fontSize = 24.sp
                             )
-                            //BoxWithConstraints {
                             if (
                                 windowSize?.widthSizeClass != WindowWidthSizeClass.Compact &&
                                 windowSize?.widthSizeClass != WindowWidthSizeClass.Medium
                                 ){
-                                //if (maxWidth > 400.dp) {
                                     Text(
                                         text = item.description,
                                         modifier = Modifier.padding(2.dp)
                                     )
-                                //}
                             }
                         }
                         HorizontalDivider()

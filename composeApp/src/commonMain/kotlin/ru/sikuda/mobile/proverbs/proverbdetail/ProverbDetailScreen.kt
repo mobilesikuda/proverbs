@@ -23,8 +23,8 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import proverbs.composeapp.generated.resources.Res
-import proverbs.composeapp.generated.resources.arrow_back_24dp
-import proverbs.composeapp.generated.resources.filterListLabel
+import proverbs.composeapp.generated.resources.app_name
+import proverbs.composeapp.generated.resources.ic_arrow_back
 import ru.sikuda.mobile.proverbs.data.ProverbEntity
 
 @Serializable
@@ -42,7 +42,7 @@ fun ProverbDetailScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(stringResource(Res.string.filterListLabel))
+                    Text(stringResource(Res.string.app_name))
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer
@@ -50,7 +50,7 @@ fun ProverbDetailScreen(
                 navigationIcon = {
                     IconButton(onClick = { onListClick() } ) {
                         Icon(
-                            painter = painterResource(Res.drawable.arrow_back_24dp),
+                            painter = painterResource(Res.drawable.ic_arrow_back),
                             contentDescription = "Back"
                         )
                     }

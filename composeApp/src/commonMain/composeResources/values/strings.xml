@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">Пословицы</string>
-    <string name="back_button">Back</string>
-    <string name="search">Search</string>
-    <string name="no_item_found">No item found</string>
-    <string name="no_search_history">No search history</string>
-    <string name="filterListLabel">Поиск по слову</string>
+    <string name="back_button">Назад</string>
+    <string name="search">Поиск:</string>
 </resources>
