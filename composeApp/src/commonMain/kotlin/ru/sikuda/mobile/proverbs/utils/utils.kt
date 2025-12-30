@@ -34,20 +34,24 @@ suspend fun loadAllData(proverbDao: ProverbDao) {
                         )
                     )
                 }
-            } catch (e: Exception) {
+            } catch (e :Exception) {
                 listProverbs = listOf<ProverbEntity>(
                     ProverbEntity(
                         "А воз и ныне там.",
                         "(Цитата из басни И. А. Крылова. Смысл поговорки в том, " +
                                 "что не смотря на все разговоры и обещания по какому-либо делу, ничего кроме болтовни не сделано.)",
                         1
+                    ),
+                    ProverbEntity(
+                        e.hashCode().toString(),
+                        e.toString(),
+                        1
                     )
                 ) as MutableList<ProverbEntity>
             }
 
-            listProverbs.forEach {
-                proverbDao.upsert(it)
-            }
+            proverbDao.upsertAll(listProverbs)
+
         }
     }
 }

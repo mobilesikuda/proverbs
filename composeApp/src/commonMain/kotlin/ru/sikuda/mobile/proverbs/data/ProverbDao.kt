@@ -5,6 +5,7 @@ import androidx.room.Query
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
+
 @Dao
 interface ProverbDao {
          /**
@@ -82,4 +83,5 @@ interface ProverbDao {
     @Query("SELECT uid, title, description FROM catalogProverbs " +
             "WHERE title LIKE '%'|| :strFind ||'%' OR description LIKE '%'|| :strFind ||'%'")
     fun findAll(strFind: String): Flow<List<ProverbEntity>>
+
 }
