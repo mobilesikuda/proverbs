@@ -1,4 +1,4 @@
-package ru.sikuda.mobile.proverbdetail
+package ru.sikuda.mobile.proverbs.proverbdetail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

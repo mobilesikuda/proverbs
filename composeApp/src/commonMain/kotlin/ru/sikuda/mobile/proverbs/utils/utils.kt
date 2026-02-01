@@ -49,9 +49,7 @@ suspend fun loadAllData(proverbDao: ProverbDao) {
                     )
                 ) as MutableList<ProverbEntity>
             }
-
             proverbDao.upsertAll(listProverbs)
-
         }
     }
 }
