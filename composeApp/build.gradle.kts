@@ -28,7 +28,7 @@ kotlin {
     
     sourceSets {
         androidMain.dependencies {
-            implementation(compose.preview)
+            //implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.room.sqlite.wrapper)
         }
@@ -46,6 +46,7 @@ kotlin {
             implementation(libs.kotlinx.navigation.compose)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.windowsSizeClass)
+            implementation(libs.retrofit)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
