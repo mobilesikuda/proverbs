@@ -13,11 +13,6 @@ plugins {
 }
 
 kotlin {
-//    androidLibrary {
-//        compilerOptions {
-//            jvmTarget.set(JvmTarget.JVM_11)
-//        }
-//    }
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
@@ -33,12 +28,12 @@ kotlin {
             implementation(libs.androidx.room.sqlite.wrapper)
         }
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.ui)
+            implementation(libs.components.resources)
+            implementation(libs.compose.uiTooling)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.androidx.room.runtime)
@@ -87,7 +82,7 @@ android {
 }
 
 dependencies {
-    debugImplementation(compose.uiTooling)
+    //debugImplementation(libs.ui.tooling)
     add("kspAndroid", libs.androidx.room.compiler)
     add("kspJvm", libs.androidx.room.compiler)
 }

@@ -15,11 +15,6 @@ import ru.sikuda.mobile.proverbs.data.ProverbEntity
 @Serializable
 data class ProverbAPI(val id: Int, val name: String, val title: String)
 
-//interface ApiService {
-//    @GET("provers")
-//    suspend fun getProverbs(): List<ProverbAPI>
-//}
-
 suspend fun loadAllData(proverbDao: ProverbDao) {
 
     withContext(Dispatchers.IO) {
